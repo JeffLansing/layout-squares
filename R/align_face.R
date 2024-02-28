@@ -1,3 +1,14 @@
+#' xy
+#'
+#' @return the indices of the rows in a face_array data structure that
+#' contain the x and y coordinates
+#'
+#' @examples
+#' far[xy,,1]
+#'
+xy <- c(2,3) # vertex coordinates
+
+
 #' Get angle
 #'
 #' @description
