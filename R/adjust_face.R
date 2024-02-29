@@ -1,10 +1,10 @@
 #' Apply an operation
 #'
 #' @description
-#' Transform the face with the operation, and then align it,
+#' Rotate the face with the operation, and then align it,
 #'
 #' @param face a face to transform
-#' @param op a transformation operator
+#' @param op a 3d rotation operator
 #'
 #' @return the transformed face
 #' @export
@@ -22,13 +22,39 @@ apply_op <- function(face, op) {
   align_face(face)
 }
 
-matchuv <- function(u,v) {
+#' select by u and v
+#'
+#' @description
+#' SELECT * FROM rar WHERE (f1 = u AND f2 = v) OR (f1 = v AND f2 = u)
+#'
+#' @param rar a ridge array data structure
+#' @param u an index of a face in r
+#' @param v an index of another face in rar
+#'
+#' @return the row in rar that contains both faces
+#' @export
+#'
+#' @examples
+#' vv <- selectby_uv(rar, u,v)[3:4] %>% as.integer()
+#'
+selectby_uv <- function(rar, u, v) {
   m1 <- which(rar[,1:2] == u, arr.ind = TRUE)
   m2 <- which(rar[,1:2] == v, arr.ind = TRUE)
   rix <- intersect(m1[,1], m2[,1])
   rar[rix,]
 }
 
+#' Get other edge
+#'
+#' @param edge an edge of a face
+#'
+#' @return the adjoining edge of the adjoining face
+#' @export
+#'
+#' @examples
+#' xx <- c(1,4)
+#' yy <- c(2,3)
+#' identical(get_other_edge(xx), yy)
 get_other_edge <- function(edge) {
   rbind(
     oar %>% filter(a == edge[1] & b == edge[2]) %>% select(c,d),
@@ -36,9 +62,22 @@ get_other_edge <- function(edge) {
   ) %>% as.integer()
 }
 
-get_opuv <- function(far, u, v) {
+#' get_op for u, v
+#'
+#' @param far a face array data structure
+#' @param rar a ridge array data structure
+#' @param u in index of a face
+#' @param v an index of an adjoining face
+#'
+#' @return the operator which, when applied to face v, aligns v with u
+#' @export
+#'
+#' @examples
+#'  op <- get_opuv(far, rar, 1, 3)
+#'
+get_opuv <- function(far, rar, u, v) {
   nu <- far[1,,u]
-  vv <- matchuv(u,v)[3:4] %>% as.integer()
+  vv <- selectby_uv(rar, u,v)[3:4] %>% as.integer()
 
   xx <- match(vv, nu)
   yy <- get_other_edge(xx)
@@ -55,6 +94,19 @@ get_opuv <- function(far, u, v) {
   NA
 }
 
+#' apply_diff for u,v
+#'
+#' @param far a face array data structure
+#' @param u in index of a face
+#' @param v an index of an adjoining face
+#'
+#' @return a translation matrix which will shift the adjoining face
+#' so that it aligns with cave u
+#' @export
+#'
+#' @examples
+#' dif <- apply_difuv(far, u, v)
+#'
 apply_difuv <- function(far, u, v) {
   nmu <- far[nm,,u]
   nmv <- far[nm,,v]
@@ -71,12 +123,37 @@ apply_difuv <- function(far, u, v) {
   dif + shift
 }
 
+#' is e
+#'
+#' @param op a operator
+#'
+#' @return TRUE if OP is the identity of d8, else return FALSE
+#' @export
+#'
+#' @examples
+#' is_e(d8[1,]) # expect TRUE
+#' is_e(d8[1,]) # expect FALSE
+#'
 is_e <- function(op) {
   identical(op, d8[1,])
 }
 
-adjust_face <- function(far, u, v) {
-  op <- get_opuv(far, u, v)
+#' adjust face
+#'
+#' @param far a face array data structure
+#' @param rar a ridge array data structure
+#' @param u in index of a face
+#' @param v an index of an adjoining face
+#'
+#' @return a copy of the adjoining face which has been rotated, shifted,
+#' and aligned so as to fit next to face u in the plane
+#' @export
+#'
+#' @examples
+#' far <- adjust_face(far, u, v)
+#'
+adjust_face <- function(far, rar, u, v) {
+  op <- get_opuv(far, rar, u, v)
   if(!is_e(op)) {
     far[,,v] <- far[,,v] %>% apply_op(op)
   }
