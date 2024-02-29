@@ -8,6 +8,15 @@
 #'
 xy <- c(2,3) # vertex coordinates
 
+#' nm
+#'
+#' @return the index of the row in a face_array data structure that
+#' contain the names of the corners of the faces
+#'
+#' @examples
+#' far[nm,,1]
+#'
+nm <- c(1) # name
 
 #' Get angle
 #'
