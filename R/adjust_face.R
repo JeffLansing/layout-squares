@@ -57,8 +57,8 @@ selectby_uv <- function(rar, u, v) {
 #' identical(get_other_edge(xx), yy)
 get_other_edge <- function(edge) {
   rbind(
-    oar %>% filter(a == edge[1] & b == edge[2]) %>% select(c,d),
-    oar %>% filter(c == edge[1] & d == edge[2]) %>% select(a,b)
+    oar %>% dplyr::filter(a == edge[1] & b == edge[2]) %>% dplyr::select(c,d),
+    oar %>% dplyr::filter(c == edge[1] & d == edge[2]) %>% dplyr::select(a,b)
   ) %>% as.integer()
 }
 
@@ -113,7 +113,7 @@ apply_difuv <- function(far, u, v) {
   match <- intersect(nmu, nmv)
   posns <- c(which(nmu %in% match), which(nmv %in% match))
   dif <- far[xy,,u] - far[xy,,v]
-  shift = case_when(
+  shift = dplyr::case_when(
     identical(posns, c(3L,4L,1L,2L)) ~ c(1, 0),
     identical(posns, c(1L,2L,3L,4L)) ~ c(-1, 0),
     identical(posns, c(1L,4L,2L,3L)) ~ c(0, -1),
@@ -150,7 +150,7 @@ is_e <- function(op) {
 #' @export
 #'
 #' @examples
-#' far <- adjust_face(far, u, v)
+#' far <- adjust_face(far, rar, u, v)
 #'
 adjust_face <- function(far, rar, u, v) {
   op <- get_opuv(far, rar, u, v)
