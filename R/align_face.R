@@ -4,6 +4,8 @@
 #' contain the x and y coordinates
 #'
 #' @examples
+#' far <- example_far
+#' xy <- c(2,3)
 #' far[xy,,1]
 #'
 xy <- c(2,3) # vertex coordinates
@@ -14,6 +16,8 @@ xy <- c(2,3) # vertex coordinates
 #' contain the names of the corners of the faces
 #'
 #' @examples
+#' far <- example_far
+#' nm <- 1
 #' far[nm,,1]
 #'
 nm <- c(1) # name
@@ -52,13 +56,12 @@ get_angle <- function(cent, perif){
 #' @export
 #'
 #' @examples
-#' face <- c(7,0,0,4,0,1,10,1,1,14,1,0) %>%
-#'   array(dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0), dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 #' mx <- face[c('x','y'),]
 #' get_angles(mx) # expect 45 135 225 315
 #'
 get_angles <- function(mx) {
-  rm <- mx %>% rowMeans()
+  rm <- mx %>% data.frame() %>% rowMeans()
   angles <- apply(mx, 2, function(col) {get_angle(rm, col)})
   angles
 }
@@ -71,8 +74,8 @@ get_angles <- function(mx) {
 #' @export
 #'
 #' @examples
-#' check_angles(c(45, 135, 225, 315,)) # expect TRUE
-#' check_angles(c(145, 35, 225, 315,)) # expect FALSE
+#' check_angles(c(45, 135, 225, 315)) # expect TRUE
+#' check_angles(c(145, 35, 225, 315)) # expect FALSE
 #'
 check_angles <- function(angles) {
   angles[1] < angles[2] & angles[2] < angles[3] & angles[3] < angles[4]
@@ -86,8 +89,7 @@ check_angles <- function(angles) {
 #' @export
 #'
 #' @examples
-#' face <- c(14,0,0,7,0,1,6,1,1,12,1,0) %>%
-#'   array(dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' face <- array(c(14,0,0,7,0,1,6,1,1,12,1,0), dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 #' align_face(face)
 align_face <- function(face) {
   f <- face

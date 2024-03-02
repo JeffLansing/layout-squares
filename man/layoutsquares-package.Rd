@@ -4,12 +4,12 @@
 \name{layoutsquares-package}
 \alias{layoutsquares}
 \alias{layoutsquares-package}
-\title{layoutsquares: What the Package Does (One Line, Title Case)}
+\title{layoutsquares: Layout Squares on a Plane}
 \description{
-What the package does (one paragraph).
+Layout the faces of a polyhedron as squares in a plane.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Jeff Lansing \email{lansing2357@gmail.com} (\href{https://orcid.org/0009-0001-2532-9625}{ORCID})
 
 }
 \keyword{internal}

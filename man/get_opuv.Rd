@@ -22,6 +22,8 @@ the operator which, when applied to face v, aligns v with u
 get_op for u, v
 }
 \examples{
+far <- example_far
+rar <- example_rar
  op <- get_opuv(far, rar, 1, 3)
 
 }

@@ -21,6 +21,7 @@ so that it aligns with cave u
 apply_diff for u,v
 }
 \examples{
-dif <- apply_difuv(far, u, v)
+far <- example_far
+dif <- apply_difuv(far, 1, 5)
 
 }

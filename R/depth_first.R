@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' graph <- igraph_from_text("KP@?Y_AG?C?G")[[1]]
+#' graph <- rgraph6::igraph_from_text("KP@?Y_AG?C?G")[[1]]
 #' depth_first_gr(graph)
 #'
 depth_first_gr <- function(g) {
@@ -48,8 +48,8 @@ depth_first_gr <- function(g) {
 #' @export
 #'
 #' @examples
-#' vnames <- 1:14 %>% as.character()
-#' graph <- igraph_from_text("KP@?Y_AG?C?G")[[1]]
+#' vnames <- as.character(1:14)
+#' graph <- rgraph6::igraph_from_text("KP@?Y_AG?C?G")[[1]]
 #' get_evids(graph, vnames)
 #'
 get_evids <- function(gr, vnames) {

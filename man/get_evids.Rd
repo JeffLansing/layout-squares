@@ -19,8 +19,8 @@ First call depth_first_gr, then convert the edge ids to pairs of vertex ids,
 using a vector of vertex names for guidance
 }
 \examples{
-vnames <- 1:14 \%>\% as.character()
-graph <- igraph_from_text("KP@?Y_AG?C?G")[[1]]
+vnames <- as.character(1:14)
+graph <- rgraph6::igraph_from_text("KP@?Y_AG?C?G")[[1]]
 get_evids(graph, vnames)
 
 }

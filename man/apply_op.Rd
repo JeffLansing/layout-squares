@@ -18,8 +18,7 @@ the transformed face
 Rotate the face with the operation, and then align it,
 }
 \examples{
-face <- c(7,0,0,4,0,1,10,1,1,14,1,0) \%>\%
-  array(dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
-apply_op(face, [d8[4,]])
+face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0),dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+apply_op(face, d8[4,])
 
 }

@@ -23,6 +23,8 @@ and aligned so as to fit next to face u in the plane
 adjust face
 }
 \examples{
-far <- adjust_face(far, u, v)
+far <- example_far
+rar <- example_rar
+far <- adjust_face(far, rar, 1, 5)
 
 }

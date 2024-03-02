@@ -10,9 +10,8 @@
 #' @export
 #'
 #' @examples
-#' face <- c(7,0,0,4,0,1,10,1,1,14,1,0) %>%
-#'   array(dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
-#' apply_op(face, [d8[4,]])
+#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0),dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' apply_op(face, d8[4,])
 #'
 apply_op <- function(face, op) {
   if(is.null(face)) {
@@ -35,7 +34,8 @@ apply_op <- function(face, op) {
 #' @export
 #'
 #' @examples
-#' vv <- selectby_uv(rar, u,v)[3:4] %>% as.integer()
+#' rar <- example_rar
+#' vv <- selectby_uv(rar, 1,5)[3:4]
 #'
 selectby_uv <- function(rar, u, v) {
   m1 <- which(rar[,1:2] == u, arr.ind = TRUE)
@@ -56,10 +56,10 @@ selectby_uv <- function(rar, u, v) {
 #' yy <- c(2,3)
 #' identical(get_other_edge(xx), yy)
 get_other_edge <- function(edge) {
-  rbind(
-    oar %>% dplyr::filter(a == edge[1] & b == edge[2]) %>% dplyr::select(c,d),
-    oar %>% dplyr::filter(c == edge[1] & d == edge[2]) %>% dplyr::select(a,b)
-  ) %>% as.integer()
+  c(
+    oar[oar[,1:2] %>% apply(1, function(rw) {all(edge == rw)}),3:4],
+    oar[oar[,3:4] %>% apply(1, function(rw) {all(edge == rw)}),1:2]
+  )
 }
 
 #' get_op for u, v
@@ -73,6 +73,8 @@ get_other_edge <- function(edge) {
 #' @export
 #'
 #' @examples
+#' far <- example_far
+#' rar <- example_rar
 #'  op <- get_opuv(far, rar, 1, 3)
 #'
 get_opuv <- function(far, rar, u, v) {
@@ -81,9 +83,12 @@ get_opuv <- function(far, rar, u, v) {
 
   xx <- match(vv, nu)
   yy <- get_other_edge(xx)
-
+  ops <- d8
+  if(!is.array(ops)) {
+    stop(capture.output(str(ops)))
+  }
   for(i in 1:8) {
-    op <- d8[i,]
+    op <- ops[i,]
     nm <- (far[,,v] %>% apply_op(op))[1,]
     uu <- nm[yy] %>% as.integer()
     if(identical(vv, uu)) {
@@ -105,7 +110,8 @@ get_opuv <- function(far, rar, u, v) {
 #' @export
 #'
 #' @examples
-#' dif <- apply_difuv(far, u, v)
+#' far <- example_far
+#' dif <- apply_difuv(far, 1, 5)
 #'
 apply_difuv <- function(far, u, v) {
   nmu <- far[nm,,u]
@@ -150,7 +156,9 @@ is_e <- function(op) {
 #' @export
 #'
 #' @examples
-#' far <- adjust_face(far, rar, u, v)
+#' far <- example_far
+#' rar <- example_rar
+#' far <- adjust_face(far, rar, 1, 5)
 #'
 adjust_face <- function(far, rar, u, v) {
   op <- get_opuv(far, rar, u, v)

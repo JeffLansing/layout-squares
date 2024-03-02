@@ -18,6 +18,8 @@ contain the x and y coordinates
 xy
 }
 \examples{
+far <- example_far
+xy <- c(2,3)
 far[xy,,1]
 
 }

@@ -17,7 +17,7 @@ Recurse through the adjacency matrix of the graph, looking for row/column
 intersections, while keeping track of intersections that have already been seen
 }
 \examples{
-graph <- igraph_from_text("KP@?Y_AG?C?G")[[1]]
+graph <- rgraph6::igraph_from_text("KP@?Y_AG?C?G")[[1]]
 depth_first_gr(graph)
 
 }

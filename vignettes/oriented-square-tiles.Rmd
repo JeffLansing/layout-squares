@@ -1,0 +1,73 @@
+---
+title: "oriented-square-tiles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{oriented-square-tiles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE, 
+  message = FALSE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE}
+library(layoutsquares)
+require(dplyr)
+require(ggplot2)
+require(patchwork)
+require(kableExtra)
+```
+
+### Basics
+
+The following figure shows a central oriented square, and the four different positions that another oriented square can take around it.
+
+```{r basic, echo=FALSE}
+sq <- cbind(
+  nm = c(1,2,3,4),
+  x = c(0,0,1,1),
+  y = c(0,1,1,0)
+) %>% data.frame()
+
+p <- ggplot(sq, aes(x=x, y = y, label = nm)) + 
+  geom_polygon(color = 'black',fill = 'grey85') +
+  geom_point(color = 'white', alpha = 0.6, size = 4) +
+  geom_text(size = 4) +
+  scale_x_continuous(expand = expansion(mult=c(0.1,0.1))) +
+  scale_y_continuous(expand = expansion(mult=c(0.1,0.1))) +
+  coord_fixed() + theme_void() +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "cm")) 
+
+design <- "#A#
+           BCD
+           #E#"
+wrap_plots(list(p,p,p,p,p), design = design, widths = unit(0.75, "in"), heights = unit(0.75, "in")) + plot_annotation(caption = 'Figure 1. Neighboring squares')
+
+```
+
+In this figure, the numbers at the corners of each square are supposed to indicate its orientation. So how is that supposed to work?
+
+The numbers are ordinals: '1' means "first", '2' means "second", '3' means "third", and so on. So the corners are ordered, which is convenient. But also the corners don't actually belong to the squares: if a square is picked up, rotated in 3d, and put back down, the vertices of the square and the ordered corners will then (usually) fit back together differently. An old way of thinking about this is that there are 3 kinds of things involved here: (i) a plane, (ii) some squares, and (iii) some places. The squares fit into the places, and the places lie on the plane. So in this way of thinking, the corners belong to the places.
+
+The following table encodes the information shown in Figure 1, so that it can be queried and used. Each edge in Figure 1 is either in the left half of the table or in the right half, but not both.
+
+```{r oar, echo=FALSE}
+
+oar <- c(1,2,3,4,
+         2,3,4,1,
+         4,1,2,3,
+         3,4,1,2) %>% array(dim = c(4,4), dimnames = list(1:4, letters[1:4])) %>% data.frame()
+
+oar2 <- data(oar, package = "layoutsquares")
+
+knitr::kable(oar, caption = "Table 1. Neighbor associations") |> 
+  column_spec(3, border_left = TRUE)
+```
+
+For example, suppose that 2 faces with vertices...

@@ -16,7 +16,7 @@ TRUE if angles increase clockwise, else FALSE
 Check angles
 }
 \examples{
-check_angles(c(45, 135, 225, 315,)) # expect TRUE
-check_angles(c(145, 35, 225, 315,)) # expect FALSE
+check_angles(c(45, 135, 225, 315)) # expect TRUE
+check_angles(c(145, 35, 225, 315)) # expect FALSE
 
 }
