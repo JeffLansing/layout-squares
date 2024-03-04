@@ -22,6 +22,7 @@ apply_diff for u,v
 }
 \examples{
 far <- example_far
-dif <- apply_difuv(far, 1, 5)
+apply_difuv(far, 1, 5)
+
 
 }

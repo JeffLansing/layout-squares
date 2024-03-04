@@ -25,6 +25,6 @@ adjust face
 \examples{
 far <- example_far
 rar <- example_rar
-far <- adjust_face(far, rar, 1, 5)
+adjust_face(far, rar, 1, 5)
 
 }

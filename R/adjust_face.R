@@ -10,7 +10,8 @@
 #' @export
 #'
 #' @examples
-#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0),dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0),dim = c(3,4),
+#' dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 #' apply_op(face, d8[4,])
 #'
 apply_op <- function(face, op) {
@@ -35,7 +36,7 @@ apply_op <- function(face, op) {
 #'
 #' @examples
 #' rar <- example_rar
-#' vv <- selectby_uv(rar, 1,5)[3:4]
+#' selectby_uv(rar, 1,5)[3:4]
 #'
 selectby_uv <- function(rar, u, v) {
   m1 <- which(rar[,1:2] == u, arr.ind = TRUE)
@@ -59,7 +60,7 @@ get_other_edge <- function(edge) {
   c(
     oar[oar[,1:2] %>% apply(1, function(rw) {all(edge == rw)}),3:4],
     oar[oar[,3:4] %>% apply(1, function(rw) {all(edge == rw)}),1:2]
-  )
+  ) %>% as.numeric()
 }
 
 #' get_op for u, v
@@ -75,7 +76,7 @@ get_other_edge <- function(edge) {
 #' @examples
 #' far <- example_far
 #' rar <- example_rar
-#'  op <- get_opuv(far, rar, 1, 3)
+#' get_opuv(far, rar, 1, 3)
 #'
 get_opuv <- function(far, rar, u, v) {
   nu <- far[1,,u]
@@ -84,9 +85,6 @@ get_opuv <- function(far, rar, u, v) {
   xx <- match(vv, nu)
   yy <- get_other_edge(xx)
   ops <- d8
-  if(!is.array(ops)) {
-    stop(capture.output(str(ops)))
-  }
   for(i in 1:8) {
     op <- ops[i,]
     nm <- (far[,,v] %>% apply_op(op))[1,]
@@ -111,7 +109,8 @@ get_opuv <- function(far, rar, u, v) {
 #'
 #' @examples
 #' far <- example_far
-#' dif <- apply_difuv(far, 1, 5)
+#' apply_difuv(far, 1, 5)
+#'
 #'
 apply_difuv <- function(far, u, v) {
   nmu <- far[nm,,u]
@@ -134,11 +133,7 @@ apply_difuv <- function(far, u, v) {
 #' @param op a operator
 #'
 #' @return TRUE if OP is the identity of d8, else return FALSE
-#' @export
 #'
-#' @examples
-#' is_e(d8[1,]) # expect TRUE
-#' is_e(d8[1,]) # expect FALSE
 #'
 is_e <- function(op) {
   identical(op, d8[1,])
@@ -158,7 +153,7 @@ is_e <- function(op) {
 #' @examples
 #' far <- example_far
 #' rar <- example_rar
-#' far <- adjust_face(far, rar, 1, 5)
+#' adjust_face(far, rar, 1, 5)
 #'
 adjust_face <- function(far, rar, u, v) {
   op <- get_opuv(far, rar, u, v)

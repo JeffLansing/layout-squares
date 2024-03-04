@@ -56,7 +56,8 @@ get_angle <- function(cent, perif){
 #' @export
 #'
 #' @examples
-#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0), dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' face <- array(c(7,0,0,4,0,1,10,1,1,14,1,0), dim = c(3,4),
+#' dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 #' mx <- face[c('x','y'),]
 #' get_angles(mx) # expect 45 135 225 315
 #'
@@ -89,7 +90,8 @@ check_angles <- function(angles) {
 #' @export
 #'
 #' @examples
-#' face <- array(c(14,0,0,7,0,1,6,1,1,12,1,0), dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+#' face <- array(c(14,0,0,7,0,1,6,1,1,12,1,0), dim = c(3,4),
+#' dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 #' align_face(face)
 align_face <- function(face) {
   f <- face

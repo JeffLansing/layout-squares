@@ -21,6 +21,6 @@ SELECT * FROM rar WHERE (f1 = u AND f2 = v) OR (f1 = v AND f2 = u)
 }
 \examples{
 rar <- example_rar
-vv <- selectby_uv(rar, 1,5)[3:4]
+selectby_uv(rar, 1,5)[3:4]
 
 }

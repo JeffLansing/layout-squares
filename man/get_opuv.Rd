@@ -24,6 +24,6 @@ get_op for u, v
 \examples{
 far <- example_far
 rar <- example_rar
- op <- get_opuv(far, rar, 1, 3)
+get_opuv(far, rar, 1, 3)
 
 }

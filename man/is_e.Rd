@@ -15,8 +15,3 @@ TRUE if OP is the identity of d8, else return FALSE
 \description{
 is e
 }
-\examples{
-is_e(d8[1,]) # expect TRUE
-is_e(d8[1,]) # expect FALSE
-
-}

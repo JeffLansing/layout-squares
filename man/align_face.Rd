@@ -16,6 +16,7 @@ the face with its columns rearranged so as to pass the check_angles check
 Align face
 }
 \examples{
-face <- array(c(14,0,0,7,0,1,6,1,1,12,1,0), dim = c(3,4), dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
+face <- array(c(14,0,0,7,0,1,6,1,1,12,1,0), dim = c(3,4),
+dimnames = list(c('nm', 'x', 'y'), letters[1:4]))
 align_face(face)
 }
