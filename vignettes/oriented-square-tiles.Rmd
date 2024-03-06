@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  warning = FALSE, 
+  warning = FALSE,
   message = FALSE,
   comment = "#>"
 )
@@ -22,13 +22,43 @@ require(dplyr)
 require(ggplot2)
 require(patchwork)
 require(kableExtra)
+
+xy <- c(2,3)
+far <- example_far
+rar <- example_rar
+
+plot1 <- function(ar) {
+  ar %>% t() %>% data.frame() %>% 
+    ggplot(aes(x=x, y = y, label = nm)) + 
+    geom_polygon(fill = 'grey80') +
+    geom_text() +
+    scale_x_continuous(expand = expansion(mult=c(0.1,0.1))) +
+    scale_y_continuous(expand = expansion(mult=c(0.1,0.1))) +
+    coord_fixed() + theme_void() +
+    theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "cm")) 
+}
+
+plot1a <- function(ar, nm) {
+  fxy <- rowMeans(ar[xy,])
+  plot1(ar) + annotate("text", x = fxy[1], y = fxy[2], label = nm, color = 'red')
+}
+
+plot2 <- function(u,v,n=2) {
+  e <- far[,,u]
+  exy <- rowMeans(e[xy,])
+  f <- far[,,v]
+  fxy <- rowMeans(f[xy,])
+  p1 <- plot1(e) + annotate("text", x = exy[1], y = exy[2], label = u, color = 'red')
+  p2 <- plot1(f) + annotate("text", x = fxy[1], y = fxy[2], label = v, color = 'red')
+  wrap_plots(list(p1, p2), ncol = n, widths = unit(1, "in"), heights = unit(1, "in")) 
+}
 ```
 
 ### Basics
 
 The following figure shows a central oriented square, and the four different positions that another oriented square can take around it.
 
-```{r basic, echo=FALSE}
+```{r basic, echo=FALSE, fig.align = 'center'}
 sq <- cbind(
   nm = c(1,2,3,4),
   x = c(0,0,1,1),
@@ -47,15 +77,15 @@ p <- ggplot(sq, aes(x=x, y = y, label = nm)) +
 design <- "#A#
            BCD
            #E#"
-wrap_plots(list(p,p,p,p,p), design = design, widths = unit(0.75, "in"), heights = unit(0.75, "in")) + plot_annotation(caption = 'Figure 1. Neighboring squares')
+wrap_plots(list(p,p,p,p,p), design = design, widths = unit(0.75, "in"), heights = unit(0.75, "in")) + plot_annotation(caption = 'Figure 1. Neighboring squares',theme = theme(plot.caption = element_text(hjust = 0.5)))
 
 ```
 
 In this figure, the numbers at the corners of each square are supposed to indicate its orientation. So how is that supposed to work?
 
-The numbers are ordinals: '1' means "first", '2' means "second", '3' means "third", and so on. So the corners are ordered, which is convenient. But also the corners don't actually belong to the squares: if a square is picked up, rotated in 3d, and put back down, the vertices of the square and the ordered corners will then (usually) fit back together differently. An old way of thinking about this is that there are 3 kinds of things involved here: (i) a plane, (ii) some squares, and (iii) some places. The squares fit into the places, and the places lie on the plane. So in this way of thinking, the corners belong to the places.
+The numbers are ordinals: in one orientation, '1' means "first", '2' means "second", '3' means "third", and so on, and in the opposite orientation, '1' means "last", '2' means "second to last",and so on. So the corners can be ordered, which is convenient. But also the corners don't actually belong to the squares: if a square is picked up, rotated in 3d, and put back down, the vertices of the square and the ordered corners will then (usually) fit back together differently. An old way of thinking about this holds that there are 3 kinds of things involved here: (i) a plane, (ii) some squares, and (iii) some places. The squares fit into the places, and the places lie on the plane. So in this way of thinking, the corners belong to the places.
 
-The following table encodes the information shown in Figure 1, so that it can be queried and used. Each edge in Figure 1 is either in the left half of the table or in the right half, but not both.
+The following table (which is the *oar* dataset) encodes the information shown in Figure 1, so that it can be queried and used. Each edge in Figure 1 is either in the left half of the table or in the right half, but not both.
 
 ```{r oar, echo=FALSE}
 
@@ -70,4 +100,56 @@ knitr::kable(oar, caption = "Table 1. Neighbor associations") |>
   column_spec(3, border_left = TRUE)
 ```
 
-For example, suppose that 2 faces with vertices...
+For example, suppose that two faces with vertices that are marked in some way meet at a common ridge (or "edge") of some polyhedron. Once the two faces are detached from that polyhedron, Table 1 tells how to fit them back together, on the plane.
+
+```{r faces, echo=FALSE, fig.align = 'center'}
+
+plot2(7, 11) + plot_annotation(caption = 'Figure 2. Adjoining faces',theme = theme(plot.caption = element_text(hjust = 0.5)))
+
+```
+
+In Figure 2 face 7 and face 11, from the *example_far* dataset, share the 2 vertices with ids 11 and 13.
+In face 7 vertex 13 is in corner 1 and vertex 11 is in corner 4, while in face 11 vertex 13 is in corner 1 and vertex 11 is in corner 2.
+
+Assuming that face 7 is fixed, the vertices of the common edge are at corners 1 and 4, and in the table the opposite corners for those are 2 and 3 (by row 2). So if face 11 can be rotated in 3d so that vertex 13 is in corner 2 instead of corner 1, and vertex 11 is in corner 3 instead of corner 2, then the two faces will be correctly aligned on the plane.
+
+The following figure shows all the possible 3d rotations of face 11.
+
+```{r allposs11, echo=FALSE, fig.align = 'center', fig.width=6, fig.height=3, fig.fullwidth = TRUE}
+
+face <- far[,,11]
+plots <- lapply(c(1,3,2,4,6,7,5,8), function(k) {
+  apply_op(face, d8[k,]) %>% plot1a(rownames(d8)[k])
+})
+wrap_plots(plots, nrow = 2, ncol = 4, widths = unit(1, "in"), heights = unit(1, "in")) + plot_annotation(caption = 'Figure 3. All possible 3d rotations of face 11',theme = theme(plot.caption = element_text(hjust = 0.5)))
+
+```
+
+So evidently the d8 element named "a3" is the rotation that is needed, and the *layoutsquares* package functions seem to agree:
+
+```{r goe, echo=TRUE}
+vv <- c(1L,4L)
+yy <- get_other_edge(vv)
+print(yy)
+op <- get_opuv(far, rar, 7, 11) 
+print(op)
+names(which(apply(d8, 1, function(r) {all(r == op)})))
+```
+The documentation for d8 describes the operations in a way that follows what appears in Figure 3.
+
+```{r d8doc, echo = FALSE,fig.fullwidth = FALSE}
+
+dataD8 <-	read.table(textConnection("
+w	x	y	z	op	cycles	description
+1	2	3	4	e	()	noop
+4	1	2	3	a	(1432)	rotation by 270 counter-clockwise
+3	4	1	2	a2	(13)(24)	rotation by 180
+2	3	4	1	a3	(1234)	rotation by 90 counter-clockwise
+3	2	1	4	x	(13)	reflection about the diagonal 2-4
+4	3	2	1	ax	(14)(23)	reflection about the line joining midpoints of sides 14 and 23
+1	4	3	2	a2x	(24)	reflection about the diagonal 1-3
+2	1	4	3	a3x	(12)(34)	reflection about the line joining midpoints of sides 12 and 34"), sep = '\t', header=TRUE)
+
+knitr::kable(dataD8, caption = "Table 2. d8 description")
+
+```
