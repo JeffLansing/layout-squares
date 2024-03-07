@@ -30,3 +30,4 @@ Depends:
 LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
+URL: https://jefflansing.github.io/layoutsquares/
