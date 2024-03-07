@@ -56,7 +56,7 @@ plot2 <- function(u,v,n=2) {
 
 ### Basics
 
-The following figure shows a central oriented square, and the four different positions that another oriented square can take around it.
+The following figure shows a central oriented square, and the four different positions that another oriented square can take around it, when laid out on a plane.
 
 ```{r basic, echo=FALSE, fig.align = 'center'}
 sq <- cbind(
@@ -83,9 +83,9 @@ wrap_plots(list(p,p,p,p,p), design = design, widths = unit(0.75, "in"), heights 
 
 In this figure, the numbers at the corners of each square are supposed to indicate its orientation. So how is that supposed to work?
 
-The numbers are ordinals: in one orientation, '1' means "first", '2' means "second", '3' means "third", and so on, and in the opposite orientation, '1' means "last", '2' means "second to last",and so on. So the corners can be ordered, which is convenient. But also the corners don't actually belong to the squares: if a square is picked up, rotated in 3d, and put back down, the vertices of the square and the ordered corners will then (usually) fit back together differently. An old way of thinking about this holds that there are 3 kinds of things involved here: (i) a plane, (ii) some squares, and (iii) some places. The squares fit into the places, and the places lie on the plane. So in this way of thinking, the corners belong to the places.
+The numbers are ordinals: '1' means "first", '2' means "second", '3' means "third", and so on, so the corners can be ordered, which is convenient. But also the corners don't actually belong to the squares: if a square is picked up, rotated in 3d, and put back down, the vertices of the square and the ordered corners will then (usually) fit back together differently. An old way of thinking about this holds that there are 3 kinds of things involved here: (i) a plane, (ii) some places, and (iii) some squares. The squares fit into the places, and the places lie on the plane. So in this way of thinking, the corners belong to the places.
 
-The following table (which is the *oar* dataset) encodes the information shown in Figure 1, so that it can be queried and used. Each edge in Figure 1 is either in the left half of the table or in the right half, but not both.
+The following table (which is the *oar* dataset in the package) encodes the information shown in Figure 1, so that it can be queried and used. Each pair of neighboring corners in Figure 1 is either in the left half of the table or in the right half, but not both.
 
 ```{r oar, echo=FALSE}
 
@@ -102,7 +102,7 @@ knitr::kable(oar, caption = "Table 1. Neighbor associations") |>
 
 For example, suppose that two faces with vertices that are marked in some way meet at a common ridge (or "edge") of some polyhedron. Once the two faces are detached from that polyhedron, Table 1 tells how to fit them back together, on the plane.
 
-```{r faces, echo=FALSE, fig.align = 'center'}
+```{r faces, echo=FALSE, fig.align = 'center', fig.height=2}
 
 plot2(7, 11) + plot_annotation(caption = 'Figure 2. Adjoining faces',theme = theme(plot.caption = element_text(hjust = 0.5)))
 
@@ -111,9 +111,9 @@ plot2(7, 11) + plot_annotation(caption = 'Figure 2. Adjoining faces',theme = the
 In Figure 2 face 7 and face 11, from the *example_far* dataset, share the 2 vertices with ids 11 and 13.
 In face 7 vertex 13 is in corner 1 and vertex 11 is in corner 4, while in face 11 vertex 13 is in corner 1 and vertex 11 is in corner 2.
 
-Assuming that face 7 is fixed, the vertices of the common edge are at corners 1 and 4, and in the table the opposite corners for those are 2 and 3 (by row 2). So if face 11 can be rotated in 3d so that vertex 13 is in corner 2 instead of corner 1, and vertex 11 is in corner 3 instead of corner 2, then the two faces will be correctly aligned on the plane.
+Assuming that face 7 is fixed, then the vertices of the common ridge between the 2 faces are at corners 1 and 4, and in the table the corners opposite those are the corners 2 and 3 (row 2 in the table). So if face 11 can be rotated in 3d so that vertex 13 is at corner 2 instead of corner 1, and vertex 11 is at corner 3 instead of corner 2, then the two faces will be correctly aligned on the plane.
 
-The following figure shows all the possible 3d rotations of face 11.
+The following figure shows the placements that result from all the possible 3d rotations of face 11.
 
 ```{r allposs11, echo=FALSE, fig.align = 'center', fig.width=6, fig.height=3, fig.fullwidth = TRUE}
 
@@ -125,17 +125,17 @@ wrap_plots(plots, nrow = 2, ncol = 4, widths = unit(1, "in"), heights = unit(1, 
 
 ```
 
-So evidently the d8 element named "a3" is the rotation that is needed, and the *layoutsquares* package functions seem to agree:
+And inspecting Figure 3 it is evident that the d8 element named "a3" is the rotation that is needed. The *layoutsquares* package functions seem to agree:
 
 ```{r goe, echo=TRUE}
 vv <- c(1L,4L)
 yy <- get_other_edge(vv)
-print(yy)
+print(yy) # see the opposite corners
 op <- get_opuv(far, rar, 7, 11) 
-print(op)
+print(op) # see the 3d rotation, as a permutation in word form
 names(which(apply(d8, 1, function(r) {all(r == op)})))
 ```
-The documentation for d8 describes the operations in a way that follows what appears in Figure 3.
+The documentation for d8 describes the operations in a way that predicts the placements that appear in Figure 3.
 
 ```{r d8doc, echo = FALSE,fig.fullwidth = FALSE}
 
@@ -153,3 +153,8 @@ w	x	y	z	op	cycles	description
 knitr::kable(dataD8, caption = "Table 2. d8 description")
 
 ```
+
+### The Face Array Data Structure (FAR)
+
+A face array is used to record the state of play during a process of laying out squares on the plane.
+
