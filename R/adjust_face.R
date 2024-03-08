@@ -19,6 +19,7 @@ apply_op <- function(face, op) {
     stop("face is null")
   }
   face[nm,] <- face[nm,][op]
+  face
 }
 
 #' select by u and v
