@@ -18,8 +18,7 @@ apply_op <- function(face, op) {
   if(is.null(face)) {
     stop("face is null")
   }
-  face[xy,] <- face[xy,][ ,op]
-  align_face(face)
+  face[nm,] <- face[nm,][op]
 }
 
 #' select by u and v
