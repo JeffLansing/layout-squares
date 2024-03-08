@@ -8,6 +8,13 @@
 \description{
 Layout the faces of a polyhedron as squares in a plane.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://jefflansing.github.io/layoutsquares/}
+}
+
+}
 \author{
 \strong{Maintainer}: Jeff Lansing \email{lansing2357@gmail.com} (\href{https://orcid.org/0009-0001-2532-9625}{ORCID})
 

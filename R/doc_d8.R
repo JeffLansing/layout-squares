@@ -16,9 +16,9 @@
 #' \tabular{rrrrlll}{
 #'   \strong{w} \tab \strong{x} \tab \strong{y} \tab \strong{z} \tab \strong{op} \tab \strong{cycles} \tab \strong{description} \cr
 #'   1 \tab 2 \tab 3 \tab 4 \tab e   \tab ()       \tab noop                                                          \cr
-#'   4 \tab 1 \tab 2 \tab 3 \tab a  \tab (1432)   \tab rotation by 270 counter-clockwise                             \cr
+#'   2 \tab 3 \tab 4 \tab 1 \tab a   \tab (1234)   \tab rotation by 90 counter-clockwise                             \cr
 #'   3 \tab 4 \tab 1 \tab 2 \tab a2  \tab (13)(24) \tab rotation by 180                                               \cr
-#'   2 \tab 3 \tab 4 \tab 1 \tab a3   \tab (1234)   \tab rotation by 90 counter-clockwise                              \cr
+#'   4 \tab 1 \tab 2 \tab 3 \tab a3  \tab (1432)   \tab rotation by 270 counter-clockwise                             \cr
 #'   3 \tab 2 \tab 1 \tab 4 \tab x   \tab (13)     \tab reflection about the diagonal 2-4                             \cr
 #'   4 \tab 3 \tab 2 \tab 1 \tab ax  \tab (14)(23) \tab reflection about the line joining midpoints of sides 14 and 23\cr
 #'   1 \tab 4 \tab 3 \tab 2 \tab a2x \tab (24)     \tab reflection about the diagonal 1-3                             \cr
@@ -63,7 +63,7 @@
 #'   for(j in 1:8) {
 #'     opi <- d8ops[[i]]
 #'     opj <- d8ops[[j]]
-#'     prod <- multiplication_table[[j]][[i]]
+#'     prod <- multiplication_table[[i]][[j]]
 #'     print(sprintf("%d,%d: c(%s)[c(%s)] ==  c(%s)", i,j,
 #'       stringr::str_c(opi, collapse=','),
 #'       stringr::str_c(opj, collapse=','),
