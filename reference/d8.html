@@ -53,7 +53,7 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An array with 8 rows and 4 variables:</p><table class="table table"><tr><td><strong>w</strong></td><td><strong>x</strong></td><td><strong>y</strong></td><td><strong>z</strong></td><td><strong>op</strong></td><td><strong>cycles</strong></td><td><strong>description</strong></td></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>e</td><td>()</td><td>noop</td></tr><tr><td>4</td><td>1</td><td>2</td><td>3</td><td>a</td><td>(1432)</td><td>rotation by 270 counter-clockwise</td></tr><tr><td>3</td><td>4</td><td>1</td><td>2</td><td>a2</td><td>(13)(24)</td><td>rotation by 180</td></tr><tr><td>2</td><td>3</td><td>4</td><td>1</td><td>a3</td><td>(1234)</td><td>rotation by 90 counter-clockwise</td></tr><tr><td>3</td><td>2</td><td>1</td><td>4</td><td>x</td><td>(13)</td><td>reflection about the diagonal 2-4</td></tr><tr><td>4</td><td>3</td><td>2</td><td>1</td><td>ax</td><td>(14)(23)</td><td>reflection about the line joining midpoints of sides 14 and 23</td></tr><tr><td>1</td><td>4</td><td>3</td><td>2</td><td>a2x</td><td>(24)</td><td>reflection about the diagonal 1-3</td></tr><tr><td>2</td><td>1</td><td>4</td><td>3</td><td>a3x</td><td>(12)(34)</td><td>reflection about the line joining midpoints of sides 12 and 34</td></tr></table></div>
+    <p>An array with 8 rows and 4 variables:</p><table class="table table"><tr><td><strong>w</strong></td><td><strong>x</strong></td><td><strong>y</strong></td><td><strong>z</strong></td><td><strong>op</strong></td><td><strong>cycles</strong></td><td><strong>description</strong></td></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>e</td><td>()</td><td>noop</td></tr><tr><td>2</td><td>3</td><td>4</td><td>1</td><td>a</td><td>(1234)</td><td>rotation by 90 counter-clockwise</td></tr><tr><td>3</td><td>4</td><td>1</td><td>2</td><td>a2</td><td>(13)(24)</td><td>rotation by 180</td></tr><tr><td>4</td><td>1</td><td>2</td><td>3</td><td>a3</td><td>(1432)</td><td>rotation by 270 counter-clockwise</td></tr><tr><td>3</td><td>2</td><td>1</td><td>4</td><td>x</td><td>(13)</td><td>reflection about the diagonal 2-4</td></tr><tr><td>4</td><td>3</td><td>2</td><td>1</td><td>ax</td><td>(14)(23)</td><td>reflection about the line joining midpoints of sides 14 and 23</td></tr><tr><td>1</td><td>4</td><td>3</td><td>2</td><td>a2x</td><td>(24)</td><td>reflection about the diagonal 1-3</td></tr><tr><td>2</td><td>1</td><td>4</td><td>3</td><td>a3x</td><td>(12)(34)</td><td>reflection about the line joining midpoints of sides 12 and 34</td></tr></table></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
     <p>SageMath 9.5:</p>
@@ -105,7 +105,7 @@ and reflections about diagonals.</p>
 <span class="r-in"><span>  <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="va">opi</span> <span class="op">&lt;-</span> <span class="va">d8ops</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span>    <span class="va">opj</span> <span class="op">&lt;-</span> <span class="va">d8ops</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-in"><span>    <span class="va">prod</span> <span class="op">&lt;-</span> <span class="va">multiplication_table</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span>    <span class="va">prod</span> <span class="op">&lt;-</span> <span class="va">multiplication_table</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%d,%d: c(%s)[c(%s)] ==  c(%s)"</span>, <span class="va">i</span>,<span class="va">j</span>,</span></span>
 <span class="r-in"><span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">opi</span>, collapse<span class="op">=</span><span class="st">','</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">opj</span>, collapse<span class="op">=</span><span class="st">','</span><span class="op">)</span>,</span></span>
@@ -114,65 +114,65 @@ and reflections about diagonals.</p>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,1: c(1,2,3,4)[c(1,2,3,4)] ==  c(1,2,3,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,2: c(1,2,3,4)[c(4,1,2,3)] ==  c(4,1,2,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,2: c(1,2,3,4)[c(2,3,4,1)] ==  c(2,3,4,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,3: c(1,2,3,4)[c(3,4,1,2)] ==  c(3,4,1,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,4: c(1,2,3,4)[c(2,3,4,1)] ==  c(2,3,4,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,4: c(1,2,3,4)[c(4,1,2,3)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,5: c(1,2,3,4)[c(3,2,1,4)] ==  c(3,2,1,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,6: c(1,2,3,4)[c(4,3,2,1)] ==  c(4,3,2,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,7: c(1,2,3,4)[c(1,4,3,2)] ==  c(1,4,3,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,8: c(1,2,3,4)[c(2,1,4,3)] ==  c(2,1,4,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,1: c(4,1,2,3)[c(1,2,3,4)] ==  c(4,1,2,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,2: c(4,1,2,3)[c(4,1,2,3)] ==  c(3,4,1,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,3: c(4,1,2,3)[c(3,4,1,2)] ==  c(2,3,4,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,4: c(4,1,2,3)[c(2,3,4,1)] ==  c(1,2,3,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,5: c(4,1,2,3)[c(3,2,1,4)] ==  c(2,1,4,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,6: c(4,1,2,3)[c(4,3,2,1)] ==  c(3,2,1,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,7: c(4,1,2,3)[c(1,4,3,2)] ==  c(4,3,2,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,8: c(4,1,2,3)[c(2,1,4,3)] ==  c(1,4,3,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,1: c(2,3,4,1)[c(1,2,3,4)] ==  c(2,3,4,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,2: c(2,3,4,1)[c(2,3,4,1)] ==  c(3,4,1,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,3: c(2,3,4,1)[c(3,4,1,2)] ==  c(4,1,2,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,4: c(2,3,4,1)[c(4,1,2,3)] ==  c(1,2,3,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,5: c(2,3,4,1)[c(3,2,1,4)] ==  c(4,3,2,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,6: c(2,3,4,1)[c(4,3,2,1)] ==  c(1,4,3,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,7: c(2,3,4,1)[c(1,4,3,2)] ==  c(2,1,4,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2,8: c(2,3,4,1)[c(2,1,4,3)] ==  c(3,2,1,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,1: c(3,4,1,2)[c(1,2,3,4)] ==  c(3,4,1,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,2: c(3,4,1,2)[c(4,1,2,3)] ==  c(2,3,4,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,2: c(3,4,1,2)[c(2,3,4,1)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,3: c(3,4,1,2)[c(3,4,1,2)] ==  c(1,2,3,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,4: c(3,4,1,2)[c(2,3,4,1)] ==  c(4,1,2,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,4: c(3,4,1,2)[c(4,1,2,3)] ==  c(2,3,4,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,5: c(3,4,1,2)[c(3,2,1,4)] ==  c(1,4,3,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,6: c(3,4,1,2)[c(4,3,2,1)] ==  c(2,1,4,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,7: c(3,4,1,2)[c(1,4,3,2)] ==  c(3,2,1,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3,8: c(3,4,1,2)[c(2,1,4,3)] ==  c(4,3,2,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,1: c(2,3,4,1)[c(1,2,3,4)] ==  c(2,3,4,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,2: c(2,3,4,1)[c(4,1,2,3)] ==  c(1,2,3,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,3: c(2,3,4,1)[c(3,4,1,2)] ==  c(4,1,2,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,4: c(2,3,4,1)[c(2,3,4,1)] ==  c(3,4,1,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,5: c(2,3,4,1)[c(3,2,1,4)] ==  c(4,3,2,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,6: c(2,3,4,1)[c(4,3,2,1)] ==  c(1,4,3,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,7: c(2,3,4,1)[c(1,4,3,2)] ==  c(2,1,4,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,8: c(2,3,4,1)[c(2,1,4,3)] ==  c(3,2,1,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,1: c(4,1,2,3)[c(1,2,3,4)] ==  c(4,1,2,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,2: c(4,1,2,3)[c(2,3,4,1)] ==  c(1,2,3,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,3: c(4,1,2,3)[c(3,4,1,2)] ==  c(2,3,4,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,4: c(4,1,2,3)[c(4,1,2,3)] ==  c(3,4,1,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,5: c(4,1,2,3)[c(3,2,1,4)] ==  c(2,1,4,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,6: c(4,1,2,3)[c(4,3,2,1)] ==  c(3,2,1,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,7: c(4,1,2,3)[c(1,4,3,2)] ==  c(4,3,2,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4,8: c(4,1,2,3)[c(2,1,4,3)] ==  c(1,4,3,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,1: c(3,2,1,4)[c(1,2,3,4)] ==  c(3,2,1,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,2: c(3,2,1,4)[c(4,1,2,3)] ==  c(4,3,2,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,2: c(3,2,1,4)[c(2,3,4,1)] ==  c(2,1,4,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,3: c(3,2,1,4)[c(3,4,1,2)] ==  c(1,4,3,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,4: c(3,2,1,4)[c(2,3,4,1)] ==  c(2,1,4,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,4: c(3,2,1,4)[c(4,1,2,3)] ==  c(4,3,2,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,5: c(3,2,1,4)[c(3,2,1,4)] ==  c(1,2,3,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,6: c(3,2,1,4)[c(4,3,2,1)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,7: c(3,2,1,4)[c(1,4,3,2)] ==  c(3,4,1,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "5,8: c(3,2,1,4)[c(2,1,4,3)] ==  c(2,3,4,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,1: c(4,3,2,1)[c(1,2,3,4)] ==  c(4,3,2,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,2: c(4,3,2,1)[c(4,1,2,3)] ==  c(1,4,3,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,2: c(4,3,2,1)[c(2,3,4,1)] ==  c(3,2,1,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,3: c(4,3,2,1)[c(3,4,1,2)] ==  c(2,1,4,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,4: c(4,3,2,1)[c(2,3,4,1)] ==  c(3,2,1,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,4: c(4,3,2,1)[c(4,1,2,3)] ==  c(1,4,3,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,5: c(4,3,2,1)[c(3,2,1,4)] ==  c(2,3,4,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,6: c(4,3,2,1)[c(4,3,2,1)] ==  c(1,2,3,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,7: c(4,3,2,1)[c(1,4,3,2)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6,8: c(4,3,2,1)[c(2,1,4,3)] ==  c(3,4,1,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,1: c(1,4,3,2)[c(1,2,3,4)] ==  c(1,4,3,2)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,2: c(1,4,3,2)[c(4,1,2,3)] ==  c(2,1,4,3)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,2: c(1,4,3,2)[c(2,3,4,1)] ==  c(4,3,2,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,3: c(1,4,3,2)[c(3,4,1,2)] ==  c(3,2,1,4)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,4: c(1,4,3,2)[c(2,3,4,1)] ==  c(4,3,2,1)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,4: c(1,4,3,2)[c(4,1,2,3)] ==  c(2,1,4,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,5: c(1,4,3,2)[c(3,2,1,4)] ==  c(3,4,1,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,6: c(1,4,3,2)[c(4,3,2,1)] ==  c(2,3,4,1)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,7: c(1,4,3,2)[c(1,4,3,2)] ==  c(1,2,3,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7,8: c(1,4,3,2)[c(2,1,4,3)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,1: c(2,1,4,3)[c(1,2,3,4)] ==  c(2,1,4,3)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,2: c(2,1,4,3)[c(4,1,2,3)] ==  c(3,2,1,4)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,2: c(2,1,4,3)[c(2,3,4,1)] ==  c(1,4,3,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,3: c(2,1,4,3)[c(3,4,1,2)] ==  c(4,3,2,1)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,4: c(2,1,4,3)[c(2,3,4,1)] ==  c(1,4,3,2)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,4: c(2,1,4,3)[c(4,1,2,3)] ==  c(3,2,1,4)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,5: c(2,1,4,3)[c(3,2,1,4)] ==  c(4,1,2,3)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,6: c(2,1,4,3)[c(4,3,2,1)] ==  c(3,4,1,2)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "8,7: c(2,1,4,3)[c(1,4,3,2)] ==  c(2,3,4,1)"</span>
