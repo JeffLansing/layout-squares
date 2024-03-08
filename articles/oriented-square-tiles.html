@@ -200,9 +200,9 @@ functions seem to agree:</p>
 <span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_opuv.html">get_opuv</a></span><span class="op">(</span><span class="va">far</span>, <span class="va">rar</span>, <span class="fl">7</span>, <span class="fl">11</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span> <span class="co"># see the 3d rotation, as a permutation in word form</span></span>
 <span><span class="co">#&gt; w x y z </span></span>
-<span><span class="co">#&gt; 2 3 4 1</span></span>
+<span><span class="co">#&gt; 4 1 2 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">d8</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">r</span> <span class="op">==</span> <span class="va">op</span><span class="op">)</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "a"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "a3"</span></span></code></pre></div>
 <p>The documentation for d8 describes the operations in a way that
 predicts the placements that appear in Figure 3.</p>
 <table class="table">
