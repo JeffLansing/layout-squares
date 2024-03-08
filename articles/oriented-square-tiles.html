@@ -182,10 +182,10 @@ in corner 1 and vertex 11 is in corner 4, while in face 11 vertex 13 is
 in corner 1 and vertex 11 is in corner 2.</p>
 <p>Assuming that face 7 is fixed, then the vertices of the common ridge
 between the 2 faces are at corners 1 and 4, and in the table the corners
-opposite those are the corners 2 and 3 (row 2 in the table). So if face
-11 can be rotated in 3d so that vertex 13 is at corner 2 instead of
-corner 1, and vertex 11 is at corner 3 instead of corner 2, then the two
-faces will be correctly aligned on the plane.</p>
+opposite those are the corners 2 and 3 (row 2 in Table 1). So if face 11
+can be rotated in 3d so that vertex 13 is at corner 2 instead of corner
+1, and vertex 11 is at corner 3 instead of corner 2, then the two faces
+will be correctly aligned on the plane.</p>
 <p>The following figure shows the placements that result from all the
 possible 3d rotations of face 11.</p>
 <p><img src="oriented-square-tiles_files/figure-html/allposs11-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -304,10 +304,52 @@ and 34</td>
 </table>
 </div>
 <div class="section level3">
-<h3 id="the-face-array-data-structure-far">The Face Array Data Structure (FAR)<a class="anchor" aria-label="anchor" href="#the-face-array-data-structure-far"></a>
+<h3 id="the-face-array-far-data-structure">The Face Array (FAR) Data Structure<a class="anchor" aria-label="anchor" href="#the-face-array-far-data-structure"></a>
 </h3>
 <p>A face array is used to record the state of play during a process of
-laying out squares on the plane.</p>
+laying out squares on the plane. A face array is a 3 dimensional R
+array; the dimensions are referred to here as the ‘rows’, the ‘columns’,
+and the ‘layers’.</p>
+<p>Each face of the polyhedron that is being laid out is represented as
+a layer in the face array. Each layer is also referred to here as a
+‘face’.</p>
+<p>There are 3 rows for each face: the first row contains the id of the
+4 vertices of the face, the second row contains the x-coordinates of the
+vertices, and the third row contains the y-coordinates. And so there are
+4 columns in each face, one for each vertex.</p>
+<p>Here is an example, from the <em>example_far</em> data set, showing
+the representation of a face, and some examples of using array indexing
+to query the data in the representation.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">face</span> <span class="op">&lt;-</span> <span class="va">example_far</span><span class="op">[</span>,,<span class="fl">11</span><span class="op">]</span></span>
+<span><span class="va">face</span></span>
+<span><span class="co">#&gt;     a  b c d</span></span>
+<span><span class="co">#&gt; nm 13 11 8 9</span></span>
+<span><span class="co">#&gt; x   0  0 1 1</span></span>
+<span><span class="co">#&gt; y   0  1 1 0</span></span>
+<span><span class="va">face</span><span class="op">[</span><span class="va">nm</span>,<span class="op">]</span> <span class="co"># nm for "name"</span></span>
+<span><span class="co">#&gt;  a  b  c  d </span></span>
+<span><span class="co">#&gt; 13 11  8  9</span></span>
+<span><span class="va">face</span><span class="op">[</span><span class="va">xy</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;   a b c d</span></span>
+<span><span class="co">#&gt; x 0 0 1 1</span></span>
+<span><span class="co">#&gt; y 0 1 1 0</span></span>
+<span><span class="va">face</span><span class="op">[</span><span class="va">xy</span>,<span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/get_angles.html">get_angles</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   a   b   c   d </span></span>
+<span><span class="co">#&gt;  45 135 225 315</span></span></code></pre></div>
+<p>For convenience, the coordinates of the faces are stored in the face
+array so that the angles between the center of the face and each vertex
+are arranged as shown in figure 4.</p>
+<div class="figure" style="text-align: center">
+<img src="oriented-square-tiles_files/figure-html/allangles-1.png" alt="Figure 4. The convention for normalized face coordinates" width="288"><p class="caption">
+Figure 4. The convention for normalized face coordinates
+</p>
+</div>
+<p>The convention shown in Figure 4 follows the convention for labeling
+the corners shown in Figure 1. In this way rotating the face in 3d using
+the ops in <em>d8</em> is just a matter of rearranging the ids of the
+vertices in the face (the first row), using the permutation
+corresponding to the op chosen.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
