@@ -22,7 +22,12 @@ require(dplyr)
 require(ggplot2)
 require(patchwork)
 require(kableExtra)
+require(igraph)
+require(rgraph6)
+require(ggraph)
 
+
+nm <- 1
 xy <- c(2,3)
 far <- example_far
 rar <- example_rar
@@ -111,15 +116,22 @@ plot2(7, 11) + plot_annotation(caption = 'Figure 2. Adjoining faces',theme = the
 In Figure 2 face 7 and face 11, from the *example_far* dataset, share the 2 vertices with ids 11 and 13.
 In face 7 vertex 13 is in corner 1 and vertex 11 is in corner 4, while in face 11 vertex 13 is in corner 1 and vertex 11 is in corner 2.
 
-Assuming that face 7 is fixed, then the vertices of the common ridge between the 2 faces are at corners 1 and 4, and in the table the corners opposite those are the corners 2 and 3 (row 2 in the table). So if face 11 can be rotated in 3d so that vertex 13 is at corner 2 instead of corner 1, and vertex 11 is at corner 3 instead of corner 2, then the two faces will be correctly aligned on the plane.
+Assuming that face 7 is fixed, then the vertices of the common ridge between the 2 faces are at corners 1 and 4, and in the table the corners opposite those are the corners 2 and 3 (row 2 in Table 1). So if face 11 can be rotated in 3d so that vertex 13 is at corner 2 instead of corner 1, and vertex 11 is at corner 3 instead of corner 2, then the two faces will be correctly aligned on the plane.
 
 The following figure shows the placements that result from all the possible 3d rotations of face 11.
 
 ```{r allposs11, echo=FALSE, fig.align = 'center', fig.width=6, fig.height=3, fig.fullwidth = TRUE}
-
+apply_op2 <- function(face, op) {
+  if(is.null(face)) {
+    stop("face is null")
+  }
+  face[1,] <- face[1,][op]
+  # align_face(face)
+  face
+}
 face <- far[,,11]
-plots <- lapply(c(1,3,2,4,6,7,5,8), function(k) {
-  apply_op(face, d8[k,]) %>% plot1a(rownames(d8)[k])
+plots <- lapply(1:8, function(k) {
+  apply_op2(face, d8[k,]) %>% plot1a(rownames(d8)[k])
 })
 wrap_plots(plots, nrow = 2, ncol = 4, widths = unit(1, "in"), heights = unit(1, "in")) + plot_annotation(caption = 'Figure 3. All possible 3d rotations of face 11',theme = theme(plot.caption = element_text(hjust = 0.5)))
 
@@ -154,7 +166,68 @@ knitr::kable(dataD8, caption = "Table 2. d8 description")
 
 ```
 
-### The Face Array Data Structure (FAR)
+### The Face Array (FAR) Data Structure
 
-A face array is used to record the state of play during a process of laying out squares on the plane.
+A face array is used to record the state of play during a process of laying out squares on the plane. A face array is a 3 dimensional R array; the dimensions are referred to here as the 'rows', the 'columns', and the 'layers'.
 
+Each face of the polyhedron that is being laid out is represented as a layer in the face array. Each layer is also referred to here as a 'face'.
+
+There are 3 rows for each face: the first row contains the id of the 4 vertices of the face, the second row contains the x-coordinates of the vertices, and the third row contains the y-coordinates. And so there are 4 columns in each face, one for each vertex.
+
+Here is an example, from the *example_far* data set, showing the representation of a face, and some examples of using array indexing to query the data in the representation.
+
+```{r exface, echo=TRUE}
+face <- example_far[,,11]
+face
+face[nm,] # nm for "name"
+face[xy,]
+face[xy,] %>% get_angles()
+```
+For convenience, the coordinates of the faces are stored in the face array so that the angles between the center of the face and each vertex are arranged as shown in figure 4.
+
+```{r allangles, echo=FALSE, fig.align = 'center', fig.width=3, fig.height=2, fig.fullwidth= TRUE, fig.cap = 'Figure 4. The convention for normalized face coordinates'}
+
+t9 <- igraph_from_graph6('HsaCCA?')[[1]]
+
+sqr2p1 <- 1 + sqrt(2)
+coords <- c(
+  0,0,
+  -1, -sqr2p1,
+  -sqr2p1, -1,
+  -sqr2p1, 1,
+  -1, sqr2p1,
+  1, sqr2p1,
+  sqr2p1, 1,
+  sqr2p1, -1,
+  1, -sqr2p1
+  ) %>% matrix(byrow = TRUE, ncol = 2)
+
+rot16 <- matrix(c(cos(pi/8), sin(pi/8), -sin(pi/8), cos(pi/8)), ncol = 2)
+coords2 <- coords %>% apply(1, function(r) {rot16 %*% r}) %>% t()
+
+plot_star <- function(t, n) {
+  ggraph(t, layout = coords2) + 
+    geom_edge_link() +
+    geom_node_point(color = 'white', alpha = 0.6, size = 6) +
+    geom_node_text(aes(label = name)) +
+    scale_x_continuous(expand = expansion(mult=c(0.2,0.2))) +
+    scale_y_continuous(expand = expansion(mult=c(0.2,0.2))) +
+    labs(subtitle = n) +
+    coord_fixed() + theme_void() +
+    theme(plot.subtitle=element_text(hjust=0.5), legend.position="none")
+}
+
+rads <- c("O", "2\u03c0", "\u03c0/8", "\u03c0/4", "3\u03c0/8", 
+          "\u03c0", "5\u03c0/8", "3\u03c0/4", "7\u03c0/8")
+
+degs <- c("O", "0\u00b0", "45\u00b0", "90\u00b0", "135\u00b0", 
+          "180\u00b0", "225\u00b0", "270\u00b0", "315\u00b0")
+
+t9r <- t9 %>% set_vertex_attr('name', value = rads)
+t9d <- t9 %>% set_vertex_attr('name', value = degs)
+
+wrap_plots(list(plot_star(t9r, 'radians') + plot_star(t9d, 'degrees')), 
+           nrow = 1, widths = unit(3, "in"), heights = unit(3, "in")) 
+
+```
+The convention shown in Figure 4 follows the convention for labeling the corners shown in Figure 1. In this way rotating the face in 3d using the ops in *d8* is just a matter of rearranging the ids of the vertices in the face (the first row), using the permutation corresponding to the op chosen.
